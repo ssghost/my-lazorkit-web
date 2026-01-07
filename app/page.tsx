@@ -87,12 +87,12 @@ export default function Home() {
     <div>
       <LazorkitProvider
         rpcUrl="https://api.devnet.solana.com"
-        portalUrl="https://gateway.pinata.cloud"
+        portalUrl="https://portal.lazor.sh"
         paymasterConfig={HARDCODED_PAYMASTER_CONFIG}
       >
         <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <h1>LazorKit Wallet Demo 1</h1>
-
+          <WalletInfo />
           <div>LazorKitProgram ID: {new anchor.web3.PublicKey('3CFG1eVGpUVAxMeuFnNw7CbBA1GQ746eQDdMWPoFTAD8').toString()}</div>
           <div>Paymaster Wallet: {new anchor.web3.PublicKey('hij78MKbJSSs15qvkHWTDCtnmba2c1W4r1V22g5sD8w').toString()}</div>
           {!isConnected ? (
@@ -152,6 +152,35 @@ export default function Home() {
         <ul>Works between websites</ul>
         <ul>Works between apps</ul>
       </div>
+    </div>
+  );
+}
+
+function WalletInfo() {
+  const { smartWalletPubkey, disconnect } = useWallet(); 
+
+  if (!smartWalletPubkey) {
+    return (
+      <div className="mt-8 text-gray-500 text-sm">
+        Wait for connection...
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-8 p-6 bg-gray-900 rounded-xl border border-gray-700 text-center w-full max-w-md">
+      <p className="text-gray-400 text-sm mb-2">Connected</p>
+      
+      <div className="bg-black text-green-400 p-3 rounded mb-4 font-mono text-xs break-all border border-gray-800">
+        {smartWalletPubkey.toString()}
+      </div>
+
+      <button 
+        onClick={disconnect}
+        className="px-6 py-2 bg-red-900/30 text-red-400 rounded hover:bg-red-900/50 transition-colors text-sm border border-red-900/50"
+      >
+        Disconnect
+      </button>
     </div>
   );
 }
